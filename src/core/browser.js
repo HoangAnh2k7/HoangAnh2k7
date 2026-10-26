@@ -28,9 +28,9 @@ export class Browsers {
       { label: 'Chỉnh sửa', submenu: [{ role: 'undo' }, { role: 'redo' }, { type: 'separator' }, { role: 'cut' }, { role: 'copy' }, { role: 'paste' }, { role: 'selectAll' }] }
     ]);
     if (process.platform === 'darwin') {
-      app.setApplicationMenu(menu);
-      win.on('focus', () => app.setApplicationMenu(menu));
-      win.on('closed', () => { if (Menu.getApplicationMenu() === menu) app.setApplicationMenu(null); });
+      Menu.setApplicationMenu(menu);
+      win.on('focus', () => Menu.setApplicationMenu(menu));
+      win.on('closed', () => { if (Menu.getApplicationMenu() === menu) Menu.setApplicationMenu(null); });
     } else win.setMenu(menu);
   }
   async cdp(win, method, params = {}) {

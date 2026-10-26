@@ -90,7 +90,7 @@ try {
   await call('profile.stopAll');
   state=await call('state'); assert.equal(state.running.length,0); assert.equal(state.profiles.length,2);
   checkpoint('profile without startup URL');
-  const empty = await call('profile.save',{name:'No startup URL'});
+  const empty = await call('profile.save',{name:'No startup URL',startUrls:[]});
   const homePagePromise = electron.waitForEvent('window');
   await call('profile.start',{id:empty.id});
   const homePage = await homePagePromise;
