@@ -1,0 +1,176 @@
+{
+  "artifact": "GPMLoginGlobal.exe",
+  "byte_length": 100447536,
+  "sha256": "4395e4ed3a3548465c0f339f4e522ead0e9faa9adabb0dadcb73f63bd7a8688e",
+  "method": "Exact UTF-8/ASCII byte search in extracted shipped artifact. First occurrence only. No target execution. This is shell/Python evidence, not a REA Evidence record.",
+  "records": [
+    {
+      "literal": "GPMLoginGlobal.Modules.ProfileModule.ViewModels.ProfilePageViewModel",
+      "file_offset_decimal": 28446254,
+      "file_offset_hex": "0x1b20e2e",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ProfileModule.ViewModels.ProfileViewModel",
+      "file_offset_decimal": 28454791,
+      "file_offset_hex": "0x1b22f87",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ProfileModule.ViewModels.CreateOrUpdateProfilePageViewModel",
+      "file_offset_decimal": 28417996,
+      "file_offset_hex": "0x1b19fcc",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ProfileModule.ViewModels.CreateProfileByNumberPopupViewModel",
+      "file_offset_decimal": 28436154,
+      "file_offset_hex": "0x1b1e6ba",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ProfileModule.ViewModels.ImportByExcelPopupViewModel",
+      "file_offset_decimal": 28440144,
+      "file_offset_hex": "0x1b1f650",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ProfileModule.ViewModels.ExportProfilePopupViewModel",
+      "file_offset_decimal": 28438916,
+      "file_offset_hex": "0x1b1f184",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ProfileModule.ViewModels.SyncActionViewModel",
+      "file_offset_decimal": 28442903,
+      "file_offset_hex": "0x1b20117",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ProfileModule.ViewModels.ArrangeWindowViewModel",
+      "file_offset_decimal": 28431535,
+      "file_offset_hex": "0x1b1d4af",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ProxyModule.ViewModels.EnterProxyViewModel",
+      "file_offset_decimal": 28462997,
+      "file_offset_hex": "0x1b24f95",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ProxyModule.ViewModels.ProxyPageViewModel",
+      "file_offset_decimal": 28467683,
+      "file_offset_hex": "0x1b261e3",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.GroupModule.ViewModels.GroupViewModel",
+      "file_offset_decimal": 28405239,
+      "file_offset_hex": "0x1b16df7",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.TagModule.ViewModels.TagListViewModel",
+      "file_offset_decimal": 28491250,
+      "file_offset_hex": "0x1b2bdf2",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.BrowserExtensionModule.ViewModels.ExtensionViewModel",
+      "file_offset_decimal": 28402141,
+      "file_offset_hex": "0x1b161dd",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.BrowserExtensionModule.ViewModels.SelectActiveGroupPopupViewModel",
+      "file_offset_decimal": 28404731,
+      "file_offset_hex": "0x1b16bfb",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.AuthModule.ViewModels.LoginPageViewModel",
+      "file_offset_decimal": 28396187,
+      "file_offset_hex": "0x1b14a9b",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.PrivateServerModule.CloudSharePopupViewModel",
+      "file_offset_decimal": 28415430,
+      "file_offset_hex": "0x1b195c6",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.SettingModule.SettingPageViewModel",
+      "file_offset_decimal": 28480497,
+      "file_offset_hex": "0x1b293f1",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.AutomationModule.ViewModels.OpenAutomatePopupViewModel",
+      "file_offset_decimal": 28398842,
+      "file_offset_hex": "0x1b154fa",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ApiModule.ViewModels.ApiPageViewModel",
+      "file_offset_decimal": 28394566,
+      "file_offset_hex": "0x1b14446",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.PluginModule.PluginViewModel",
+      "file_offset_decimal": 28414526,
+      "file_offset_hex": "0x1b1923e",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.ServerModule.ViewModels.UpdateManagerPopupViewModel",
+      "file_offset_decimal": 28479958,
+      "file_offset_hex": "0x1b291d6",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.BackgroundModule.BackgroundTasksViewModel",
+      "file_offset_decimal": 28399078,
+      "file_offset_hex": "0x1b155e6",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Plugins.Backup.ViewModels.BackupPopupViewModel",
+      "file_offset_decimal": 28492667,
+      "file_offset_hex": "0x1b2c37b",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Plugins.IpV6Creator.ViewModels.IpV6CreatorPageViewModel",
+      "file_offset_decimal": 28495859,
+      "file_offset_hex": "0x1b2cff3",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.StartupModule.ViewModels.EnterLicensePopupViewModel",
+      "file_offset_decimal": 28487765,
+      "file_offset_hex": "0x1b2b055",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Lib.Application.Dtos.ProfileDto,GPMLoginGlobal.Lib.CanvasMode!Getter",
+      "file_offset_decimal": 28425034,
+      "file_offset_hex": "0x1b1bb4a",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Lib.Application.Dtos.ProfileDto,GPMLoginGlobal.Lib.WebRtcMode!Getter",
+      "file_offset_decimal": 28421839,
+      "file_offset_hex": "0x1b1aecf",
+      "scope": "static literal only; does not establish function execution"
+    },
+    {
+      "literal": "GPMLoginGlobal.Modules.MainModule.MainWindowViewModel,GPMLoginGlobal.IsMcpPageActive!Getter",
+      "file_offset_decimal": 28411248,
+      "file_offset_hex": "0x1b18570",
+      "scope": "static literal only; does not establish function execution"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "profile-studio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Independent local browser profile workspace for Windows and Intel macOS",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js",
+    "package:windows": "node scripts/package.mjs win32",
+    "package:macos": "node scripts/package.mjs darwin",
+    "package:all": "node scripts/package.mjs all",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "exceljs": "4.4.0"
+  },
+  "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "electron": "45.0.0",
+    "jsdom": "30.1.3",
+    "playwright-core": "1.58.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "author": "Profile Studio contributors"
+}

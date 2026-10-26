@@ -1,0 +1,31 @@
+name: Desktop validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: windows
+          - os: macos-15-intel
+            target: macos
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --include=dev
+      - run: npm test
+      - run: npm run smoke
+      - run: npm run package:${{ matrix.target }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Profile-Studio-${{ matrix.target }}-x64
+          path: artifacts/*

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Profile Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-icon">P</span><div>Profile Studio<small>KHÔNG GIAN LÀM VIỆC</small></div></div>
+    <p class="nav-label">QUẢN LÝ</p>
+    <nav aria-label="Điều hướng chính">
+      <button class="nav-item active" data-page="profiles"><span>▦</span>Hồ sơ<span class="nav-count" id="profile-count">0</span></button>
+      <button class="nav-item" data-page="proxies"><span>⇄</span>Proxy</button>
+      <button class="nav-item" data-page="organize"><span>◇</span>Nhóm & nhãn</button>
+      <button class="nav-item" data-page="extensions"><span>⊞</span>Tiện ích</button>
+      <button class="nav-item" data-page="workflows"><span>↳</span>Tự động hóa</button>
+      <button class="nav-item" data-page="settings"><span>⚙</span>Cài đặt</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="activity-link" id="activity-button"><span class="status-dot"></span><span id="activity-label">Sẵn sàng làm việc</span><span>↗</span></button>
+      <div class="local-badge"><span>⌂</span><div>Lưu trữ trên máy<small id="platform-label">Dữ liệu thuộc về bạn</small></div></div>
+      <small id="version-label">Profile Studio</small>
+    </div>
+  </aside>
+  <main>
+    <header class="topbar"><div class="breadcrumb">Không gian làm việc <span>/</span> <strong id="breadcrumb-page">Hồ sơ</strong></div><div class="topbar-status"><span class="status-dot"></span>Cục bộ & riêng tư</div></header>
+    <section class="workspace">
+      <div class="page-heading"><div><p class="eyebrow">PROFILE STUDIO</p><h1 id="page-title">Hồ sơ trình duyệt</h1><p id="page-description">Một không gian riêng cho mỗi công việc.</p></div><div id="heading-actions" class="button-row"></div></div>
+      <div id="page-content" aria-live="polite"></div>
+      <div class="product-note"><span>ⓘ</span><p>Ứng dụng độc lập dùng trình duyệt Electron. Không tái tạo cơ chế fingerprint, tài khoản hoặc dịch vụ đám mây riêng của GPM.</p></div>
+    </section>
+  </main>
+  <dialog id="edit-dialog" class="editor-dialog"><form id="edit-form"><div class="dialog-heading"><div><p class="eyebrow">PROFILE STUDIO</p><h2 id="dialog-title"></h2></div><button type="button" class="icon-button close-dialog" aria-label="Đóng">×</button></div><div id="dialog-fields" class="dialog-fields"></div><p id="dialog-error" class="form-error" role="alert"></p><div class="dialog-footer"><button type="button" class="button secondary close-dialog">Hủy</button><button type="submit" id="dialog-submit" class="button primary">Lưu thay đổi</button></div></form></dialog>
+  <dialog id="confirm-dialog" class="confirm-dialog"><h2 id="confirm-title">Xác nhận</h2><p id="confirm-message"></p><div class="button-row"><button id="confirm-cancel" class="button secondary">Hủy</button><button id="confirm-ok" class="button danger">Xác nhận</button></div></dialog>
+  <dialog id="activity-dialog" class="editor-dialog"><div class="dialog-heading"><div><p class="eyebrow">HOẠT ĐỘNG</p><h2>Công việc gần đây</h2></div><button class="icon-button" id="close-activity" aria-label="Đóng">×</button></div><div id="activity-list" class="activity-list"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
