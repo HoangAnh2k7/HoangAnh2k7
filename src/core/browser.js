@@ -65,6 +65,10 @@ export class Browsers {
     win.webContents.on('will-navigate', (event, url) => { if (!/^https?:\/\//i.test(url) && url !== 'about:blank') event.preventDefault(); });
     win.on('closed', () => { this.windows.delete(id); if (this.sync?.leaderId === id || this.sync?.followerIds.includes(id)) void this.stopSync(); this.changed(); });
     try {
+      // Emulation commands require a live renderer. Initialize only about:blank
+      // before overrides so the first real page receives the profile settings.
+      trace('initialize blank renderer');
+      await win.loadURL('about:blank');
       trace('apply overrides');
       await this.applyOverrides(win, p, ua);
       const urls = p.startUrls || [];
@@ -81,6 +85,7 @@ export class Browsers {
         child.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
         child.webContents.on('will-navigate', (e, u) => { if (!/^https?:\/\//i.test(u)) e.preventDefault(); });
         win.once('closed', () => { if (!child.isDestroyed()) child.destroy(); });
+        await child.loadURL('about:blank');
         await this.applyOverrides(child, p, ua);
         await child.loadURL(url);
       }
