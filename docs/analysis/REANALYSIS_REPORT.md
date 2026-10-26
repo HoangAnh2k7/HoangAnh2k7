@@ -4,6 +4,8 @@
 
 Báo cáo dựa trên đúng bộ cài đã gửi, tài liệu công khai được website GPM dẫn đến và video Drive người dùng bổ sung. Không công bố video/transcript, thông tin tài khoản, license/proxy hoặc raw dump có thể chứa dữ liệu nhạy cảm. Báo cáo này không cập nhật hay tự phát hành một bản ứng dụng mới.
 
+**Cập nhật triển khai sau báo cáo:** [Profile Studio 0.1.1](../CHANGES_0.1.1.md) đã thêm dọn cache riêng và chặn xóa nhóm còn hồ sơ. Bảng khoảng cách bên dưới vẫn mô tả bản 0.1.0 tại thời điểm phân tích.
+
 ## 1. Đang đối chiếu ba phiên bản khác nhau
 
 | Nguồn | Nhận diện | Dùng để làm gì |

@@ -1,16 +1,16 @@
-# Trạng thái triển khai và kiểm chứng 0.1.0
+# Trạng thái triển khai và kiểm chứng
 
 Yêu cầu ban đầu là toàn bộ chức năng GPM trên Windows và macOS Intel. Yêu cầu đó **chưa hoàn tất**; không thể suy ra máy chủ, engine tùy biến và toàn bộ hành vi từ các chuỗi trong một bộ cài Windows. Bản này cung cấp nền tảng độc lập để tiếp tục phát triển, không phải mã nguồn gốc đã khôi phục.
 
 | Phạm vi | Đã viết | Đã kiểm chứng trong phiên |
 | --- | --- | --- |
 | F01/F03/F06: CRUD cấu hình, clone, bulk create, ghi chú/màu | Store, UI | Test lưu/reload, clone, validate và DOM tạo hồ sơ. Có ghim/lần chạy gần nhất và đổi nhóm/proxy hàng loạt; chưa có shortcut/owner. |
-| F02/F07/F08: bảng tìm kiếm, nhóm, nhãn | Store, UI | DOM tương tác và cleanup tham chiếu. Có thùng rác/khôi phục/xóa vĩnh viễn; chưa có mọi cột hoặc kéo chọn. |
-| F04/F09: phiên riêng và proxy | Electron browser service | Mã đã viết; runtime browser/proxy chưa chạy do host thiếu sandbox phù hợp. Không xác nhận chống rò rỉ DNS/fingerprint. |
-| Cookie, cache, export/import | Electron session; JSON bundle, ExcelJS | Bundle roundtrip/rollback được test. Dialog tệp, Excel và session cookie cần smoke trên OS đích. |
+| F02/F07/F08: bảng tìm kiếm, nhóm, nhãn | Store, UI | DOM tương tác và cleanup tham chiếu; chặn xóa nhóm còn hồ sơ, kể cả trong thùng rác. Có thùng rác/khôi phục/xóa vĩnh viễn; chưa có mọi cột hoặc kéo chọn. |
+| F04/F09: phiên riêng và proxy | Electron browser service | Cookie isolation, đóng/mở lại đạt smoke native Windows/macOS; proxy thật chưa nghiệm thu. Không xác nhận chống rò rỉ DNS/fingerprint. |
+| Cookie, cache, export/import | Electron session; JSON bundle, ExcelJS | Bundle roundtrip/rollback được test. Smoke native kiểm tra dọn HTTP cache giữ cookie/local storage và cache hồ sơ khác; dialog tệp và Excel vẫn cần nghiệm thu. |
 | Tiện ích theo nhóm | Loader extension thư mục | Metadata và tham chiếu được test; extension thật chưa chạy. |
 | Sắp xếp/đồng bộ cửa sổ | Electron/CDP | Chưa runtime. Đồng bộ giới hạn click, input, scroll document chính. |
-| Tự động hóa | goto/wait/click/type/screenshot | DOM editor/validation được test; thực thi browser chưa chạy. |
+| Tự động hóa | goto/wait/click/type/screenshot | DOM editor/validation được test; smoke native chạy chuỗi thao tác trên fixture localhost và screenshot. |
 | API | http.Server localhost + Bearer | Auth, reject Origin, định tuyến, token/password redaction được test với HTTP thật. |
 | Windows/macOS x64 đóng gói | Electron Packager | Kiểm tra archive và binary architecture khi tạo gói. Chưa chạy gói trên OS đích; chưa ký/notarize. ASAR integrity digest cho gói macOS chưa nhúng khi build trên Linux (packager báo thiếu codesign); cần build/ký trên Mac trước khi phân phối chính thức. |
 | Engine, fingerprint nâng cao, Firefox, cloud, role/sharing, GPM auth/license, UDP/route, plugin IPv6, GPM Automate, updater/AI | Chưa triển khai | Cần đặc tả/engine/backend hợp lệ và dữ liệu kiểm thử; không có cơ sở tuyên bố tương đương. |
@@ -40,3 +40,7 @@ Smoke chạy ứng dụng từ mã nguồn trên runner, chưa kiểm tra riêng
 ## Mã nguồn 0.1.1
 
 Bổ sung dọn HTTP cache riêng, bảo toàn cookie/storage; chặn xóa nhóm còn hồ sơ và giải thích hồ sơ trong thùng rác. 21 test lưu trữ/API/DOM đạt trên cloud. Smoke native được mở rộng cho cache thật, bảo toàn cookie/local storage, cách ly cache và từ chối dọn hồ sơ đang mở. [Chi tiết](CHANGES_0.1.1.md). Kết quả native của commit 0.1.0 ở trên không tự áp dụng cho thay đổi mới; cần CI tương ứng.
+
+## Nghiệm thu native 0.1.1
+
+Commit `f74e80121ef383a96d4f46cf2551485f13efcf25`, [CI 40319589492](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40319589492): Windows x64 và macOS Intel đều đạt 21/21 test cùng smoke Electron. Smoke mới xác nhận HTTP cache có dữ liệu trước khi dọn, về 0 sau dọn, cookie/local storage còn sau mở lại, cache hồ sơ thứ hai giữ nguyên và chặn dọn hồ sơ đang mở. Gói ZIP được build native và có SHA-256; smoke chạy từ mã nguồn, chưa kiểm tra riêng bản ZIP sau giải nén.

@@ -1,12 +1,12 @@
 # Profile Studio — Windows và macOS Intel
 
-**Tải bản thử nghiệm:** [GitHub Releases](https://github.com/HoangAnh2k7/HoangAnh2k7/releases/tag/v0.1.0). Các gói đã tạo trực tiếp trên Windows/macOS Intel; kiểm thử Electron từ mã nguồn trên hai runner đã đạt ([CI](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40276302963)). Chưa kiểm thử thủ công mọi chức năng của gói ZIP trên máy người dùng.
+**Tải bản thử nghiệm:** [GitHub Releases](https://github.com/HoangAnh2k7/HoangAnh2k7/releases/tag/v0.1.1). Các gói đã tạo trực tiếp trên Windows/macOS Intel; kiểm thử Electron từ mã nguồn trên hai runner đã đạt ([CI](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40319589492)). Chưa kiểm thử thủ công mọi chức năng của gói ZIP trên máy người dùng.
 
-Bản thay thế độc lập được xây dựng từ danh mục chức năng quan sát trong bộ cài GPMLoginGlobal do người dùng cung cấp. **Đây là bản nền tảng 0.1.0, chưa tương đương toàn bộ GPMLogin.** Không dùng lại thương hiệu, tài khoản cloud hoặc browser engine đã chỉnh sửa của GPM.
+Bản thay thế độc lập được xây dựng từ danh mục chức năng quan sát trong bộ cài GPMLoginGlobal do người dùng cung cấp. **Đây là bản nền tảng 0.1.1, chưa tương đương toàn bộ GPMLogin.** Không dùng lại thương hiệu, tài khoản cloud hoặc browser engine đã chỉnh sửa của GPM.
 
 ## Thay đổi trong mã nguồn 0.1.1
 
-Có thêm “Chỉ xóa cache” giữ cookie/dữ liệu trang và chặn xóa nhóm còn hồ sơ, kể cả trong thùng rác. [Hướng dẫn và phạm vi kiểm chứng](docs/CHANGES_0.1.1.md). Liên kết tải ở đầu trang là bản 0.1.0 cho đến khi bản 0.1.1 hoàn tất kiểm tra native.
+Có thêm “Chỉ xóa cache” giữ cookie/dữ liệu trang và chặn xóa nhóm còn hồ sơ, kể cả trong thùng rác. [Hướng dẫn và phạm vi kiểm chứng](docs/CHANGES_0.1.1.md). Bản 0.1.1 đã đạt 21 test và smoke Electron từ mã nguồn trên Windows/macOS Intel. Các gói ZIP chưa được nghiệm thu thủ công sau giải nén.
 
 ## Phân tích lại GPMLogin
 
@@ -25,8 +25,8 @@ Gói dùng Electron 45, cần hệ điều hành được phiên bản runtime n
 
 - Tạo/sửa/nhân bản/xóa cấu hình hồ sơ; tên, ghi chú, màu, ngôn ngữ, timezone, user agent, kích thước cửa sổ, danh sách trang mở đầu.
 - Tìm kiếm/sắp xếp/lọc, ghim hồ sơ, lần chạy gần nhất, thùng rác/khôi phục và xóa vĩnh viễn, đổi nhóm/proxy hàng loạt, chọn nhiều, tạo hàng loạt và mở/đóng hàng loạt có giới hạn số phiên khởi chạy đồng thời.
-- Nhóm, nhãn màu và tham chiếu được dọn khi xóa.
-- Hồ sơ dùng session Electron `persist:` riêng; mã quản lý cookie/cache/local storage, đóng/mở lại hồ sơ, nhập/xuất cookie JSON, dọn dữ liệu đã được triển khai. **Tách session thực tế chưa được nghiệm thu runtime tại môi trường Linux này.**
+- Nhóm, nhãn màu và tham chiếu được dọn khi xóa. Xóa nhóm bị chặn nếu còn hồ sơ, kể cả trong thùng rác; cần chuyển hồ sơ ra ngoài hoặc xóa vĩnh viễn trước.
+- Hồ sơ dùng session Electron `persist:` riêng; mã quản lý cookie/cache/local storage, đóng/mở lại hồ sơ, nhập/xuất cookie JSON, dọn dữ liệu đã được triển khai. Cookie tách biệt và mở lại đã đạt smoke Electron từ mã nguồn trên Windows/macOS Intel. Có mục riêng chỉ xóa HTTP cache giữ cookie/dữ liệu trang; cần đóng hồ sơ trước khi thực hiện.
 - HTTP/HTTPS proxy có xác thực, SOCKS5 không xác thực; chỉ dẫn IP được kiểm tra qua `api.ipify.org`. Chromium không hỗ trợ SOCKS5 có username/password; ứng dụng báo lỗi thay vì dùng trực tiếp ngoài ý muốn. Không có UDP SOCKS5/route/rotate proxy theo nhà cung cấp.
 - Nhập/xuất cấu hình JSON/CSV/XLSX. JSON bundle ánh xạ lại nhóm/nhãn/proxy khi nhập trên máy khác; không xuất mật khẩu proxy mặc định. CSV/XLSX có các cột `name,groupId,tagIds,proxyId,startUrls,userAgent,language,timezone,width,height,notes,color`; `tagIds` và `startUrls` là chuỗi mảng JSON. Đây là định dạng của Profile Studio, chưa xác nhận tương thích định dạng GPM.
 - Thêm extension Chromium từ thư mục giải nén, bật theo nhóm. Không cam kết mọi extension Chrome Web Store hoạt động trong Electron.
@@ -34,7 +34,7 @@ Gói dùng Electron 45, cần hệ điều hành được phiên bản runtime n
 - Quy trình tự động hóa tuần tự: `goto`, `wait`, `click`, `type`, `screenshot`. Ảnh lưu trong thư mục dữ liệu ứng dụng. Đây là công cụ độc lập, không chạy workflow riêng của GPM Automate.
 - API localhost có Bearer token, mặc định tắt, chặn Origin của trang web, không trả mật khẩu proxy qua API trạng thái. Không tương thích API GPM/MCP khi chưa có kiểm thử đối chiếu.
 
-Các phần có mã tích hợp Electron ở trên **chưa đồng nghĩa đã được kiểm chứng hoạt động trên hai nền tảng đích**. Chi tiết trạng thái nghiệm thu và các chức năng còn thiếu: [docs/IMPLEMENTATION_STATUS.md](docs/IMPLEMENTATION_STATUS.md). Danh mục 29 nhóm quan sát trong mẫu: [docs/FEATURE_MATRIX.md](docs/FEATURE_MATRIX.md).
+Smoke Electron đã xác nhận các luồng nêu ở đầu trang trên hai nền tảng; **chưa kiểm chứng mọi chức năng hoặc mọi môi trường đích**. Chi tiết trạng thái nghiệm thu và các chức năng còn thiếu: [docs/IMPLEMENTATION_STATUS.md](docs/IMPLEMENTATION_STATUS.md). Danh mục 29 nhóm quan sát trong mẫu: [docs/FEATURE_MATRIX.md](docs/FEATURE_MATRIX.md).
 
 ## Các phần chưa có
 
