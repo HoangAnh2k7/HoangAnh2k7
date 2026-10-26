@@ -30,15 +30,22 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci --include=dev
+      - name: Install Electron runtime
+        run: node node_modules/electron/install.js
       - run: npm test
+        id: unit
       - run: npm run smoke
+        id: smoke
       - run: npm run package:${{ matrix.target }}
+        id: package
+        if: always() && steps.unit.outcome == 'success'
       - uses: actions/upload-artifact@v4
+        if: always() && steps.package.outcome == 'success'
         with:
           name: Profile-Studio-${{ matrix.target }}-x64
           path: artifacts/*
       - name: Upload release packages
-        if: github.event_name == 'workflow_dispatch' && inputs.upload_release
+        if: always() && steps.package.outcome == 'success' && github.event_name == 'workflow_dispatch' && inputs.upload_release
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
