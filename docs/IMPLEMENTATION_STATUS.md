@@ -36,3 +36,7 @@ Yêu cầu ban đầu là toàn bộ chức năng GPM trên Windows và macOS In
 Run [40276302963](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40276302963), commit `7023fef40f2779a5c8b69a25c6fa65b999a1b030`: cả hai job thành công. Mỗi job chạy 18/18 test, smoke Electron thật, đóng gói ZIP và upload Releases. Smoke xác nhận startup/IPC, cookie tách biệt, close/reopen, quy trình localhost và screenshot. Đã sửa lỗi startup: phải khởi tạo renderer bằng about:blank trước khi gửi lệnh Emulation/CDP.
 
 Smoke chạy ứng dụng từ mã nguồn trên runner, chưa kiểm tra riêng việc người dùng giải nén và mở ZIP và chưa nghiệm thu mọi nhóm chức năng. Các giới hạn engine/fingerprint/cloud, chữ ký và tính tương đương GPM vẫn còn. Các gói tại Releases được build native ở từng OS; cảnh báo ASAR digest của bản cross-build Linux ban đầu không áp dụng cho gói macOS native mới.
+
+## Mã nguồn 0.1.1
+
+Bổ sung dọn HTTP cache riêng, bảo toàn cookie/storage; chặn xóa nhóm còn hồ sơ và giải thích hồ sơ trong thùng rác. 21 test lưu trữ/API/DOM đạt trên cloud. Smoke native được mở rộng cho cache thật, bảo toàn cookie/local storage, cách ly cache và từ chối dọn hồ sơ đang mở. [Chi tiết](CHANGES_0.1.1.md). Kết quả native của commit 0.1.0 ở trên không tự áp dụng cho thay đổi mới; cần CI tương ứng.

@@ -66,9 +66,31 @@ test('deletion updates profile references and extension targeting', t => {
   const tag = store.saveCollection({ collection: 'tags', item: { name: 'Tag' } });
   const proxy = store.saveCollection({ collection: 'proxies', item: { name: 'Proxy', server: 'socks5://127.0.0.1:1080' } });
   store.saveCollection({ collection: 'extensions', item: { name: 'Extension', path: '/tmp/my-extension', groupIds: [group.id] } });
-  store.saveProfile({ name: 'P', groupId: group.id, tagIds: [tag.id], proxyId: proxy.id });
+  const profile = store.saveProfile({ name: 'P', groupId: group.id, tagIds: [tag.id], proxyId: proxy.id });
+  store.saveProfile({ id: profile.id, groupId: '' });
   for (const [collection, item] of [['groups', group], ['tags', tag], ['proxies', proxy]]) store.deleteCollection({ collection, id: item.id });
   const snapshot = store.snapshot(); assert.equal(snapshot.profiles[0].groupId, ''); assert.equal(snapshot.profiles[0].proxyId, ''); assert.deepEqual(snapshot.profiles[0].tagIds, []); assert.deepEqual(snapshot.extensions[0].groupIds, []);
+});
+
+test('nonempty groups cannot be deleted, including archived profiles, without changing saved data', t => {
+  const store = fixture(t);
+  const group = store.saveCollection({ collection: 'groups', item: { name: 'Keep profiles' } });
+  const profile = store.saveProfile({ name: 'Keep session', groupId: group.id });
+  const rejectDeletion = () => {
+    const before = store.snapshot(), bytes = fs.readFileSync(store.file, 'utf8');
+    assert.throws(() => store.deleteCollection({ collection: 'groups', id: group.id }), /trong nhóm.*thùng rác/);
+    assert.deepEqual(store.snapshot(), before);
+    assert.equal(fs.readFileSync(store.file, 'utf8'), bytes);
+    assert.deepEqual(new Store(store.directory).snapshot(), before);
+  };
+  rejectDeletion();
+  store.archiveProfiles({ ids: [profile.id] });
+  rejectDeletion();
+  store.restoreProfiles({ ids: [profile.id] });
+  store.saveProfile({ id: profile.id, groupId: '' });
+  store.deleteCollection({ collection: 'groups', id: group.id });
+  assert.equal(store.snapshot().groups.length, 0);
+  assert.equal(store.snapshot().profiles[0].id, profile.id);
 });
 
 test('failed persistence leaves in-memory state and saved file unchanged', t => {

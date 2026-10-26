@@ -5,7 +5,7 @@ import { join } from 'node:path';
 const trace = stage => { if (process.env.PROFILE_STUDIO_DIAGNOSTICS === '1') console.log(`Browser startup: ${stage}`); };
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 export class Browsers {
-  constructor(store, changed) { this.store = store; this.changed = changed; this.windows = new Map(); this.sync = null; this.starting = new Map(); }
+  constructor(store, changed) { this.store = store; this.changed = changed; this.windows = new Map(); this.sync = null; this.starting = new Map(); this.maintenance = new Set(); }
   profile(id) {
     const p = this.store.snapshot().profiles.find(p => p.id === id);
     if (!p) throw new Error('Không tìm thấy hồ sơ.');
@@ -22,6 +22,7 @@ export class Browsers {
     finally { clearTimeout(timer); }
   }
   async start(id) {
+    if (this.maintenance.has(id)) throw new Error('Hồ sơ đang dọn dữ liệu. Đợi hoàn tất trước khi mở.');
     if (this.windows.has(id)) { this.windows.get(id).focus(); return { id }; }
     if (this.starting.has(id)) return this.starting.get(id);
     const promise = this._start(id).finally(() => this.starting.delete(id));
@@ -112,9 +113,19 @@ export class Browsers {
   }
   stop(id) { const win = this.windows.get(id); if (win && !win.isDestroyed()) win.destroy(); return { id }; }
   stopAll() { for (const id of this.running()) this.stop(id); }
-  async clear(id) {
+  async withClosedSession(id, action) {
     if (this.windows.has(id) || this.starting.has(id)) throw new Error('Đóng hồ sơ trước khi xóa dữ liệu duyệt web.');
-    const ses = this.getSession(id); await ses.clearStorageData(); await ses.clearCache(); return { ok: true };
+    if (this.maintenance.has(id)) throw new Error('Hồ sơ đang dọn dữ liệu. Đợi hoàn tất trước khi thử lại.');
+    const ses = this.getSession(id);
+    this.maintenance.add(id);
+    try { await action(ses); return { ok: true }; }
+    finally { this.maintenance.delete(id); }
+  }
+  async clearCache(id) {
+    return this.withClosedSession(id, ses => ses.clearCache());
+  }
+  async clear(id) {
+    return this.withClosedSession(id, async ses => { await ses.clearStorageData(); await ses.clearCache(); });
   }
   async cookies(id, input) {
     const ses = this.getSession(id);

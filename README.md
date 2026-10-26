@@ -4,6 +4,10 @@
 
 Bản thay thế độc lập được xây dựng từ danh mục chức năng quan sát trong bộ cài GPMLoginGlobal do người dùng cung cấp. **Đây là bản nền tảng 0.1.0, chưa tương đương toàn bộ GPMLogin.** Không dùng lại thương hiệu, tài khoản cloud hoặc browser engine đã chỉnh sửa của GPM.
 
+## Thay đổi trong mã nguồn 0.1.1
+
+Có thêm “Chỉ xóa cache” giữ cookie/dữ liệu trang và chặn xóa nhóm còn hồ sơ, kể cả trong thùng rác. [Hướng dẫn và phạm vi kiểm chứng](docs/CHANGES_0.1.1.md). Liên kết tải ở đầu trang là bản 0.1.0 cho đến khi bản 0.1.1 hoàn tất kiểm tra native.
+
 ## Phân tích lại GPMLogin
 
 [Báo cáo đối chiếu bộ cài 5.1.2, tài liệu chính thức và video v3](docs/analysis/REANALYSIS_REPORT.md) ghi rõ cấu trúc dữ liệu/API, luồng sử dụng, khác biệt của bản 0.1 và phần chưa xác minh. [Quan sát video theo thời gian](docs/analysis/VIDEO_OBSERVATIONS.md) giúp đối chiếu thao tác. Đây là tài liệu phân tích; ứng dụng và gói phát hành chưa được cập nhật trong lượt này.

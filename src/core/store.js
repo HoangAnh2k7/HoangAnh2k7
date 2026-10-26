@@ -333,9 +333,11 @@ export class Store {
     return this.mutate(state => {
       const previous = state[collection].find(row => row.id === selected);
       if (!previous) fail('Mục dữ liệu không tồn tại');
+      if (collection === 'groups' && state.profiles.some(profile => profile.groupId === selected)) {
+        fail('Chuyển hoặc xóa vĩnh viễn các hồ sơ trong nhóm trước khi xóa nhóm, kể cả hồ sơ trong thùng rác');
+      }
       state[collection] = state[collection].filter(row => row.id !== selected);
       for (const profile of state.profiles) {
-        if (collection === 'groups' && profile.groupId === selected) profile.groupId = '';
         if (collection === 'proxies' && profile.proxyId === selected) profile.proxyId = '';
         if (collection === 'tags') profile.tagIds = profile.tagIds.filter(value => value !== selected);
       }

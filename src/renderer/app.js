@@ -244,6 +244,7 @@ function renderProfileRows() {
     menuAction('Nhân bản hồ sơ', b => perform('profile.clone', { id: profile.id }, { trigger: b, message: 'Đã nhân bản cấu hình hồ sơ.' }));
     menuAction('Nhập cookie từ tệp', b => perform('profile.cookies.import', { id: profile.id }, { trigger: b, message: 'Đã nhập cookie.' }));
     menuAction('Xuất cookie ra tệp', b => perform('profile.cookies.export', { id: profile.id }, { trigger: b, message: 'Đã xuất cookie.' }));
+    menuAction('Chỉ xóa cache', () => confirmAction('Chỉ xóa cache?', `Đóng hồ sơ “${profile.name}” trước khi thực hiện. Cookie và dữ liệu trang được giữ lại.`, () => perform('profile.clearCache', { id: profile.id }, { message: 'Đã xóa cache, giữ cookie và dữ liệu trang.' })));
     menuAction('Xóa dữ liệu trình duyệt', () => confirmAction('Xóa dữ liệu trình duyệt?', `Cookie, cache và dữ liệu trang của “${profile.name}” sẽ bị xóa. Cấu hình hồ sơ được giữ lại.`, () => perform('profile.clearData', { id: profile.id }, { message: 'Đã xóa dữ liệu trình duyệt.' })));
     menuAction('Chuyển vào thùng rác', () => confirmAction('Chuyển hồ sơ vào thùng rác?', `“${profile.name}” sẽ được ẩn khỏi danh sách. Bạn có thể khôi phục hồ sơ trong thùng rác.`, () => perform('profile.delete', { ids: [profile.id] }, { message: 'Đã chuyển hồ sơ vào thùng rác.' })));
     menu.append(dropdown);
@@ -341,6 +342,10 @@ function editProxy(proxy = {}) {
   }, async form => { await call('collection.save', { collection: 'proxies', item: { ...readForm(form), id: proxy.id } }); }, 'Lưu proxy');
 }
 function deleteCollection(collection, item) {
+  if (collection === 'groups' && state.profiles.some(profile => profile.groupId === item.id)) {
+    toast('Chuyển hoặc xóa vĩnh viễn các hồ sơ trong nhóm trước khi xóa nhóm, kể cả hồ sơ trong thùng rác.', true);
+    return;
+  }
   confirmAction(`Xóa “${item.name}”?`, 'Các hồ sơ đang sử dụng mục này có thể cần được cập nhật lại. Dữ liệu hồ sơ vẫn được giữ.', () => perform('collection.delete', { collection, id: item.id }, { message: 'Đã xóa.' }));
 }
 function renderOrganize() {
@@ -352,7 +357,8 @@ function renderOrganize() {
     if (!state[collection].length) panel.append(emptyState(`Chưa có ${collection === 'groups' ? 'nhóm' : 'nhãn'}`, collection === 'groups' ? 'Chia hồ sơ theo dự án hoặc mục đích sử dụng.' : 'Đánh dấu những hồ sơ có cùng đặc điểm.', '+ Thêm mới', () => editSimple(collection), icon));
     for (const item of state[collection]) {
       const count = state.profiles.filter(p => !p.archived && (collection === 'groups' ? p.groupId === item.id : (p.tagIds || []).includes(item.id))).length;
-      panel.append(node('div', { class: 'list-row' }, [node('div', { class: 'list-title' }, [node('span', { class: 'color-dot' }), node('div', {}, [node('strong', { text: item.name }), node('small', { text: `${count} hồ sơ` })])]), node('div', { class: 'button-row' }, [iconButton('✎', 'Chỉnh sửa', () => editSimple(collection, item)), iconButton('×', 'Xóa', () => deleteCollection(collection, item), 'delete')])]));
+      const archivedCount = collection === 'groups' ? state.profiles.filter(p => p.archived && p.groupId === item.id).length : 0;
+      panel.append(node('div', { class: 'list-row' }, [node('div', { class: 'list-title' }, [node('span', { class: 'color-dot' }), node('div', {}, [node('strong', { text: item.name }), node('small', { text: `${count} hồ sơ${archivedCount ? ` · ${archivedCount} trong thùng rác` : ''}` })])]), node('div', { class: 'button-row' }, [iconButton('✎', 'Chỉnh sửa', () => editSimple(collection, item)), iconButton('×', 'Xóa', () => deleteCollection(collection, item), 'delete')])]));
     }
     split.append(panel);
   }

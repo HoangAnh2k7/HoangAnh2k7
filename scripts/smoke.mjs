@@ -9,7 +9,17 @@ import http from 'node:http';
 import assert from 'node:assert/strict';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const data = await mkdtemp(join(tmpdir(), 'profile-studio-smoke-'));
-const server = http.createServer((_req, res) => { res.setHeader('Content-Type','text/html'); res.end('<!doctype html><title>Local fixture</title><input id="name"><button id="set" onclick="document.cookie=\'isolation=yes;path=/\'">Set</button>'); });
+const server = http.createServer((req, res) => {
+  if (req.url === '/cache-fixture.js') {
+    res.setHeader('Content-Type', 'application/javascript');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.end(`window.fixtureLoaded=true;/*${'cache fixture '.repeat(20000)}*/`);
+    return;
+  }
+  res.setHeader('Content-Type','text/html');
+  res.setHeader('Cache-Control','no-store');
+  res.end('<!doctype html><title>Local fixture</title><script src="/cache-fixture.js"></script><input id="name"><button id="set" onclick="document.cookie=\'isolation=yes;path=/\'">Set</button>');
+});
 await new Promise(resolve => server.listen(0,'127.0.0.1',resolve));
 let electron;
 let stage = 'launch';
@@ -43,6 +53,34 @@ try {
   await call('profile.stop',{id:one.id}); await call('profile.start',{id:one.id});
   const cookieOne = await electron.evaluate(async ({session},id) => session.fromPartition(`persist:profile-${id}`).cookies.get({name:'isolation'}),one.id);
   assert.equal(cookieOne[0]?.value,'one','profile cookie persists across close/reopen');
+  checkpoint('cache-only clearing');
+  await assert.rejects(call('profile.clearCache',{id:one.id}), /Đóng hồ sơ/);
+  await electron.evaluate(async ({BrowserWindow,session},id) => {
+    const ses = session.fromPartition(`persist:profile-${id}`);
+    const win = BrowserWindow.getAllWindows().find(w => w.webContents.session === ses);
+    await win.webContents.executeJavaScript('localStorage.setItem("cache-check", "keep-local-storage")');
+  },one.id);
+  const cacheBefore = await electron.evaluate(({session},id) => session.fromPartition(`persist:profile-${id}`).getCacheSize(),one.id);
+  assert.ok(cacheBefore > 0,'local fixture must populate HTTP cache before clearing');
+  const otherCacheBefore = await electron.evaluate(({session},id) => session.fromPartition(`persist:profile-${id}`).getCacheSize(),two.id);
+  assert.ok(otherCacheBefore > 0,'second profile has independent cached fixture');
+  await call('profile.stop',{id:one.id});
+  const profilesBeforeClear = (await call('state')).profiles;
+  await call('profile.clearCache',{id:one.id});
+  assert.deepEqual((await call('state')).profiles,profilesBeforeClear,'cache clearing preserves profile metadata');
+  const afterClear = await electron.evaluate(async ({session},id) => {
+    const ses = session.fromPartition(`persist:profile-${id}`);
+    return {size:await ses.getCacheSize(),cookies:await ses.cookies.get({name:'isolation'})};
+  },one.id);
+  assert.equal(afterClear.size,0,'HTTP cache is removed');
+  assert.equal(afterClear.cookies[0]?.value,'one','cache-only clearing preserves cookie');
+  assert.ok(await electron.evaluate(({session},id) => session.fromPartition(`persist:profile-${id}`).getCacheSize(),two.id) > 0,'other profile cache is preserved');
+  await call('profile.start',{id:one.id});
+  const keptStorage = await electron.evaluate(async ({BrowserWindow,session},id) => {
+    const ses = session.fromPartition(`persist:profile-${id}`);
+    return BrowserWindow.getAllWindows().find(w => w.webContents.session === ses).webContents.executeJavaScript('localStorage.getItem("cache-check")');
+  },one.id);
+  assert.equal(keptStorage,'keep-local-storage','cache-only clearing preserves localStorage after reopen');
   checkpoint('automation');
   const workflow = await call('collection.save',{collection:'workflows',item:{name:'Local smoke',steps:[{type:'goto',url},{type:'type',selector:'#name',text:'hello'},{type:'click',selector:'#set'},{type:'screenshot'}]}});
   const result = await call('workflow.run',{id:workflow.id,profileIds:[one.id]}); assert.equal(result[0].ok,true);
@@ -50,7 +88,7 @@ try {
   await call('profile.stopAll');
   state=await call('state'); assert.equal(state.running.length,0); assert.equal(state.profiles.length,2);
   assert.equal(await page.locator('body').innerText().then(t=>t.includes('Profile Studio')),true);
-  console.log('PASS: Electron startup, IPC, separate cookies, reopen persistence, local workflow, screenshot, clean stop.');
+  console.log('PASS: Electron startup, IPC, separate cookies, reopen persistence, cache-only removal preserving cookie/localStorage and other profile cache, local workflow, screenshot, clean stop.');
 } finally {
   checkpoint('cleanup');
   if (electron) { await electron.evaluate(({app}) => app.exit(0)).catch(() => {}); await electron.close(); }

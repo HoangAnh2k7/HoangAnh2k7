@@ -193,3 +193,44 @@ test('renderer pins profiles ahead of sort and bulk assigns group/proxy without 
   assert.deepEqual(ui.calls.find(c => c.method === 'profile.bulkEdit').args.patch, { groupId: group.id, proxyId: proxy.id });
   assert.equal(ui.errors.length, 0, ui.errors.map(String).join('\n'));
 });
+
+test('cache-only action requires confirmation and dispatches separately from full data removal', async t => {
+  const ui = await workspace(t);
+  const profile = ui.store.saveProfile({ name: 'Keep login' });
+  ui.refresh();
+  ui.click('Chỉ xóa cache');
+  assert.equal(ui.q('#confirm-dialog').open, true);
+  assert.match(ui.q('#confirm-dialog').textContent, /Cookie và dữ liệu trang được giữ lại/);
+  ui.q('#confirm-cancel').click();
+  assert.equal(ui.calls.filter(c => c.method === 'profile.clearCache').length, 0);
+  ui.click('Chỉ xóa cache'); ui.q('#confirm-ok').click();
+  await until(() => ui.calls.some(c => c.method === 'profile.clearCache'));
+  assert.deepEqual(ui.calls.find(c => c.method === 'profile.clearCache').args, { id: profile.id });
+  assert.equal(ui.calls.filter(c => c.method === 'profile.clearData').length, 0);
+  assert.equal(ui.store.snapshot().profiles[0].name, 'Keep login');
+  assert.equal(ui.errors.length, 0, ui.errors.map(String).join('\n'));
+});
+
+test('group deletion explains active and trashed profiles before allowing deletion of an empty group', async t => {
+  const ui = await workspace(t);
+  const group = ui.store.saveCollection({ collection: 'groups', item: { name: 'Keep group' } });
+  const profile = ui.store.saveProfile({ name: 'Grouped', groupId: group.id });
+  ui.refresh(); ui.navigate('organize');
+  ui.q('button[title="Xóa"]').click();
+  assert.equal(ui.q('#confirm-dialog').open, false);
+  assert.match(ui.q('#toast').textContent, /Chuyển hoặc xóa vĩnh viễn/);
+  assert.equal(ui.calls.filter(c => c.method === 'collection.delete').length, 0);
+  ui.store.archiveProfiles({ ids: [profile.id] }); ui.refresh();
+  assert.match(ui.q('.list-row').textContent, /0 hồ sơ · 1 trong thùng rác/);
+  ui.q('button[title="Xóa"]').click();
+  assert.equal(ui.q('#confirm-dialog').open, false);
+  assert.equal(ui.calls.filter(c => c.method === 'collection.delete').length, 0);
+  ui.store.restoreProfiles({ ids: [profile.id] });
+  ui.store.saveProfile({ id: profile.id, groupId: '' }); ui.refresh();
+  ui.q('button[title="Xóa"]').click();
+  assert.equal(ui.q('#confirm-dialog').open, true);
+  ui.q('#confirm-ok').click();
+  await until(() => ui.store.snapshot().groups.length === 0);
+  assert.equal(ui.store.snapshot().profiles[0].id, profile.id);
+  assert.equal(ui.errors.length, 0, ui.errors.map(String).join('\n'));
+});

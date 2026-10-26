@@ -126,6 +126,7 @@ async function dispatch(method, args = {}) {
     case 'profile.startMany': return task('Mở nhiều hồ sơ', () => browsers.startMany(args.ids));
     case 'profile.stop': result = browsers.stop(args.id); break;
     case 'profile.stopAll': result = browsers.stopAll(); break;
+    case 'profile.clearCache': result = await browsers.clearCache(args.id); break;
     case 'profile.clearData': {
       const p = browsers.profile(args.id);
       const answer = await dialog.showMessageBox(control, { type: 'warning', message: `Xóa cookie, cache và dữ liệu web của “${p.name}”?`, buttons: ['Hủy', 'Xóa dữ liệu'], defaultId: 0, cancelId: 0 });
