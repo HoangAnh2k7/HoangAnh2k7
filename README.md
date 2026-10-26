@@ -1,5 +1,7 @@
 # Profile Studio — Windows và macOS Intel
 
+**Tải bản thử nghiệm:** [GitHub Releases](https://github.com/HoangAnh2k7/HoangAnh2k7/releases/tag/v0.1.0). Các gói đã tạo trực tiếp trên Windows/macOS Intel; kiểm thử Electron từ mã nguồn trên hai runner đã đạt ([CI](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40276302963)). Chưa kiểm thử thủ công mọi chức năng của gói ZIP trên máy người dùng.
+
 Bản thay thế độc lập được xây dựng từ danh mục chức năng quan sát trong bộ cài GPMLoginGlobal do người dùng cung cấp. **Đây là bản nền tảng 0.1.0, chưa tương đương toàn bộ GPMLogin.** Không dùng lại thương hiệu, tài khoản cloud hoặc browser engine đã chỉnh sửa của GPM.
 
 ## Sử dụng gói ứng dụng
@@ -48,7 +50,7 @@ npm run package:windows     # gói ZIP Windows x64, chưa ký
 npm run package:macos       # gói ZIP macOS Intel, chưa ký
 ```
 
-Bản đóng gói dùng Linux/macOS `zip` có hỗ trợ symlink; trên Windows dùng PowerShell Compress-Archive. Script CI có ma trận Windows và macOS Intel để chạy smoke và đóng gói; chưa chạy CI trong phiên này, chưa đẩy mã lên GitHub.
+Bản đóng gói dùng Linux/macOS `zip` có hỗ trợ symlink; trên Windows dùng PowerShell Compress-Archive. Script CI có ma trận Windows và macOS Intel; CI nêu trên đã đạt cả hai job và tải các gói lên Releases. Mã nguồn đã đẩy lên GitHub theo sự đồng ý của người dùng.
 
 ## Dữ liệu và bảo mật cục bộ
 

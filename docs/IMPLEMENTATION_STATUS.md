@@ -15,7 +15,7 @@ Yêu cầu ban đầu là toàn bộ chức năng GPM trên Windows và macOS In
 | Windows/macOS x64 đóng gói | Electron Packager | Kiểm tra archive và binary architecture khi tạo gói. Chưa chạy gói trên OS đích; chưa ký/notarize. ASAR integrity digest cho gói macOS chưa nhúng khi build trên Linux (packager báo thiếu codesign); cần build/ký trên Mac trước khi phân phối chính thức. |
 | Engine, fingerprint nâng cao, Firefox, cloud, role/sharing, GPM auth/license, UDP/route, plugin IPv6, GPM Automate, updater/AI | Chưa triển khai | Cần đặc tả/engine/backend hợp lệ và dữ liệu kiểm thử; không có cơ sở tuyên bố tương đương. |
 
-## Kết quả kiểm tra
+## Kết quả ban đầu trên Linux (trước CI native)
 
 - `npm test`: 18/18 đạt (15 lưu trữ/API, 3 DOM integration bằng jsdom).
 - Kiểm tra cú pháp các module JS: đạt.
@@ -30,3 +30,9 @@ Yêu cầu ban đầu là toàn bộ chức năng GPM trên Windows và macOS In
 3. Có đặc tả cho các nhóm trong FEATURE_MATRIX còn thiếu; ghi nhận input/output và trạng thái gốc bằng máy kiểm thử Windows, không suy đoán hành vi từ tên.
 4. Với cloud/engine/plugin độc quyền: cần tài liệu, quyền tích hợp và backend/engine phù hợp hoặc chấp nhận thiết kế độc lập có phạm vi khác. Không dùng token trích từ binary làm credential.
 5. Ký Windows và ký/notarize macOS khi phân phối chính thức. Gói ZIP chưa ký không phải installer phát hành đã nghiệm thu.
+
+## Cập nhật sau CI Windows/macOS Intel
+
+Run [40276302963](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40276302963), commit `7023fef40f2779a5c8b69a25c6fa65b999a1b030`: cả hai job thành công. Mỗi job chạy 18/18 test, smoke Electron thật, đóng gói ZIP và upload Releases. Smoke xác nhận startup/IPC, cookie tách biệt, close/reopen, quy trình localhost và screenshot. Đã sửa lỗi startup: phải khởi tạo renderer bằng about:blank trước khi gửi lệnh Emulation/CDP.
+
+Smoke chạy ứng dụng từ mã nguồn trên runner, chưa kiểm tra riêng việc người dùng giải nén và mở ZIP và chưa nghiệm thu mọi nhóm chức năng. Các giới hạn engine/fingerprint/cloud, chữ ký và tính tương đương GPM vẫn còn. Các gói tại Releases được build native ở từng OS; cảnh báo ASAR digest của bản cross-build Linux ban đầu không áp dụng cho gói macOS native mới.

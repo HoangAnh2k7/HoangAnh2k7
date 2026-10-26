@@ -1,6 +1,6 @@
 import { packager } from '@electron/packager';
 import { mkdir, readFile, writeFile, rm, copyFile } from 'node:fs/promises';
-import { resolve, dirname } from 'node:path';
+import { resolve, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
@@ -31,7 +31,7 @@ for (const platform of targets) {
       p.on('error', fail); p.on('exit', code => code === 0 ? ok() : fail(new Error(`zip exited ${code}`)));
     });
     const hash = createHash('sha256').update(await readFile(archive)).digest('hex');
-    await writeFile(`${archive}.sha256`, `${hash}  ${archive.split('/').pop()}\n`);
+    await writeFile(`${archive}.sha256`, `${hash}  ${basename(archive)}\n`);
     console.log(`Built unsigned x64 package: ${archive}`);
   }
 }
