@@ -17,6 +17,13 @@ export class Browsers {
   running() { return [...this.windows.keys()]; }
   setupNavigation(win) {
     const home = () => { void win.loadFile(startPage).catch(() => {}); };
+    win.webContents.on('before-input-event', (event, input) => {
+      const modifier = process.platform === 'darwin' ? input.meta : input.control;
+      if (input.type === 'keyDown' && modifier && !input.alt && (input.code === 'KeyL' || input.key.toLowerCase() === 'l')) {
+        event.preventDefault();
+        home();
+      }
+    });
     const menu = Menu.buildFromTemplate([
       { label: 'Điều hướng', submenu: [
         { label: 'Nhập địa chỉ / Tìm kiếm', accelerator: 'CmdOrCtrl+L', click: home },

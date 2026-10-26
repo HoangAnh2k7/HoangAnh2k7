@@ -103,6 +103,7 @@ try {
   await homePage.locator('button[type="submit"]').click();
   await homePage.waitForURL(url);
   await homePage.locator('#name').waitFor();
+  checkpoint('location shortcut');
   await homePage.keyboard.press(process.platform === 'darwin' ? 'Meta+l' : 'Control+l');
   await homePage.locator('#address').waitFor();
   assert.equal(await homePage.locator('h1').innerText(),'Hồ sơ đã sẵn sàng');
