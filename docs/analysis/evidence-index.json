@@ -1,0 +1,292 @@
+{
+  "scope": "Static analysis and sampled tutorial observations; no runtime parity claim. Raw inputs are not distributed.",
+  "artifacts": [
+    {
+      "role": "installer",
+      "bytes": 596347040,
+      "sha256": "a6fe103fa5308721e0f611bc893cf4ff166e84eae763453622f6e8bd2c757943",
+      "distributed": false
+    },
+    {
+      "role": "main_executable",
+      "bytes": 100447536,
+      "sha256": "4395e4ed3a3548465c0f339f4e522ead0e9faa9adabb0dadcb73f63bd7a8688e",
+      "distributed": false
+    },
+    {
+      "role": "derived_nativeaot_data",
+      "bytes": 25454848,
+      "sha256": "fea5b706975e059ffe95570544f47f77a2d3cb360d591b2732ac9ddd465ac10e",
+      "distributed": false
+    },
+    {
+      "role": "user_supplied_tutorial",
+      "bytes": 28618505,
+      "sha256": "ff8aeaa8ccaa77e7a9a25ecd5fbc7438df325c6d5c35e244504b57cb99b49127",
+      "distributed": false
+    }
+  ],
+  "nativeaot": {
+    "rtr_version": [
+      16,
+      0
+    ],
+    "hydrated_base_va": "0x145f22030",
+    "hydrated_bytes": 25454848,
+    "relocations": 2352818
+  },
+  "locale_instruction_validation": {
+    "en": {
+      "function_start": "0x140a2e608",
+      "function_end": "0x140a348d5",
+      "instructions": 5507,
+      "targeted_call_count": 547,
+      "matched_immediate_argument_sequences": 547,
+      "unique_keys": 547
+    },
+    "vi": {
+      "function_start": "0x140a34928",
+      "function_end": "0x140a3abf5",
+      "instructions": 5507,
+      "targeted_call_count": 547,
+      "matched_immediate_argument_sequences": 547,
+      "unique_keys": 547
+    },
+    "zh": {
+      "function_start": "0x140a3ac48",
+      "function_end": "0x140a40f15",
+      "instructions": 5507,
+      "targeted_call_count": 547,
+      "matched_immediate_argument_sequences": 547,
+      "unique_keys": 547
+    }
+  },
+  "public_api_documentation": {
+    "route_count": 20,
+    "profile_field_count": 26
+  },
+  "public_sources": [
+    {
+      "url": "https://help.gpmloginapp.com/gioi-thieu-chung.md",
+      "fetched_at": "2026-10-26T06:26:17.220664+00:00",
+      "sha256": "5c51e600a23b75d04061f65c6c77a153b91469b7aeefec8c827d1147305ec60e",
+      "bytes": 3962
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint.md",
+      "fetched_at": "2026-10-26T06:26:17.166264+00:00",
+      "sha256": "a705aa13ee7715af3747c22c6b5d55e7848c419417752290e10b1cc7e4501d47",
+      "bytes": 1886
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/dia-chi-ip.md",
+      "fetched_at": "2026-10-26T06:26:17.879003+00:00",
+      "sha256": "402ee736724a4c15013221f3327976d2c14706a00a60165d67921e7978870c00",
+      "bytes": 1019
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/timezone-mui-gio.md",
+      "fetched_at": "2026-10-26T06:26:17.171455+00:00",
+      "sha256": "f502ba23454b98b683c19988ff6198e0e37d5555767a565421e2b21d1479485c",
+      "bytes": 836
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/geo-location-dinh-vi-dia-ly.md",
+      "fetched_at": "2026-10-26T06:26:17.481782+00:00",
+      "sha256": "d1fae783d4aeba38388c53bf2706340d4900a29d3a6c7fe48f7bd92c62270dd6",
+      "bytes": 943
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/webrtc-ip.md",
+      "fetched_at": "2026-10-26T06:26:17.591226+00:00",
+      "sha256": "04e69a68eb4c0f82e4495f9fc9e8a7f5f8df678724141faf0d6e80234ae07bc7",
+      "bytes": 2311
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/phan-cung-canvas.md",
+      "fetched_at": "2026-10-26T06:26:17.936793+00:00",
+      "sha256": "681442a474e24d6fe6092e227a5ee6067a7d6cc1619b8d4850d1ebebaa955b08",
+      "bytes": 2703
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/phan-cung-webgl.md",
+      "fetched_at": "2026-10-26T06:26:18.122052+00:00",
+      "sha256": "06a9387b2f47b55ff6a6f0513013b85120ac29bdb8e0f8fd210dc2c2103fe750",
+      "bytes": 2781
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/phan-cung-audio.md",
+      "fetched_at": "2026-10-26T06:26:18.502821+00:00",
+      "sha256": "4eea1f73dd31a1157036719f5d430198cbb4623054193b665e19a9a4d9e05e11",
+      "bytes": 2362
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/phan-cung-cpu-ram.md",
+      "fetched_at": "2026-10-26T06:26:18.423956+00:00",
+      "sha256": "aa6ca6a5d9217d8f333cf63d5ef55ca24e4f1b3ac06cebde83276af5d7827b23",
+      "bytes": 704
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/phan-mem-user-agent.md",
+      "fetched_at": "2026-10-26T06:26:18.594152+00:00",
+      "sha256": "1653099fc0c497a8b76c0cbf5a16542cc566602937a1aab01cbd48c167f58c64",
+      "bytes": 2940
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/phan-mem-screen.md",
+      "fetched_at": "2026-10-26T06:26:18.596458+00:00",
+      "sha256": "6a7e07c6332bb44a8819421dff507539dc1d2491926c9389b6540cfbd292477e",
+      "bytes": 1035
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/phan-mem-font.md",
+      "fetched_at": "2026-10-26T06:26:19.093247+00:00",
+      "sha256": "067503931010445b28376fcecbd727e8b40089f8caa9c3995abd52a056b73f43",
+      "bytes": 827
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/phan-mem-he-dieu-hanh.md",
+      "fetched_at": "2026-10-26T06:26:19.008001+00:00",
+      "sha256": "319c52c7dc9bab37acf94c5e3a64ddc94715f65eb38eaf3e344ace2625108d52",
+      "bytes": 789
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/kien-thuc-ve-fingerprint/tcp-ip-fingerprint.md",
+      "fetched_at": "2026-10-26T06:26:19.175425+00:00",
+      "sha256": "7fe63ddb0497127bca70f547a46d39a6f9893ce74151160f786ef023a06e181e",
+      "bytes": 1380
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-bat-dau/cong-cu-kiem-tra-fingerprint.md",
+      "fetched_at": "2026-10-26T06:26:19.229886+00:00",
+      "sha256": "f57b97113d66878e668daca5f9c9835dd1429200f5ff9fee91f20009556ec178",
+      "bytes": 2463
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global.md",
+      "fetched_at": "2026-10-26T06:26:19.316305+00:00",
+      "sha256": "bc5f217a10db7dbe075ec4be521bb1b046eae7493e47522ca38c23ab4a290b5a",
+      "bytes": 1941
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/huong-dan-dang-ky-dung-thu-gpm-login-global.md",
+      "fetched_at": "2026-10-26T06:26:19.566694+00:00",
+      "sha256": "ec1135a5368f24223fd92dc53580ff95831652ebf1d8fa72a2d159d9bf75d124",
+      "bytes": 2124
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/huong-dan-cai-dat-phan-mem.md",
+      "fetched_at": "2026-10-26T06:26:19.675532+00:00",
+      "sha256": "0916018e38651faaa40303e162fa7e8c9ba6451e73d6aad7686a7a4e8176f990",
+      "bytes": 1218
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/gioi-thieu-qua-giao-dien-va-tinh-nang-tung-thanh-phan.md",
+      "fetched_at": "2026-10-26T06:26:19.806029+00:00",
+      "sha256": "84b14bb7f1f15806f92027e0bdf2303134ca0cb7e2ba0959bc27a2a4fc724ca6",
+      "bytes": 5860
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/profiles.md",
+      "fetched_at": "2026-10-26T06:26:20.014561+00:00",
+      "sha256": "f73c568a5aff1220cfe05837f55b99e221326d5f92289fa25594975e2eddf306",
+      "bytes": 18099
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/groups.md",
+      "fetched_at": "2026-10-26T06:26:19.947280+00:00",
+      "sha256": "3910016b4faf074120cc46e01adfde6a58601195b623fd2fe067ebb2e39022e7",
+      "bytes": 2386
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/proxies.md",
+      "fetched_at": "2026-10-26T06:26:19.847919+00:00",
+      "sha256": "04b7b91bcc4ada7e44d61b10dd0a4109b907c97def07882022ec63c770840dc0",
+      "bytes": 3842
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/extension.md",
+      "fetched_at": "2026-10-26T06:26:20.307709+00:00",
+      "sha256": "12a59d7648cd95b0cd27705e031248619510214711db16770e9025b0d9b6c7b8",
+      "bytes": 6169
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/plugins.md",
+      "fetched_at": "2026-10-26T06:26:20.128473+00:00",
+      "sha256": "2bbbd467acd49ee2a28f3497041d6df9247b22e3c68d8585ce61182f8b4b25c7",
+      "bytes": 3957
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/trash.md",
+      "fetched_at": "2026-10-26T06:26:20.365480+00:00",
+      "sha256": "aa09a7c3b8b6737a88798dc27c4dedf9e9564f8cbd61cb23faadbf2a47e22095",
+      "bytes": 1944
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/automation.md",
+      "fetched_at": "2026-10-26T06:26:20.695287+00:00",
+      "sha256": "c797ebfbc6ee01865c64f87e0c4c3234c3f129901a47da695529b18e964162ff",
+      "bytes": 4879
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/app-store.md",
+      "fetched_at": "2026-10-26T06:26:20.710985+00:00",
+      "sha256": "65d8358fc17fda45c69b302f66ef850ed0d68657bf2833a41eb9ffa485880bbe",
+      "bytes": 4001
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/developer.md",
+      "fetched_at": "2026-10-26T06:26:20.472371+00:00",
+      "sha256": "9a1df7f4a86642d54f79d894da65da48b53ee18f7f6c7953e52c2aa606a84fb1",
+      "bytes": 2604
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/setting.md",
+      "fetched_at": "2026-10-26T06:26:20.759942+00:00",
+      "sha256": "655a7dd833e677a558e8516ccf15a9d2f5168337c30c6ec070dea52d5141477b",
+      "bytes": 3669
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/support.md",
+      "fetched_at": "2026-10-26T06:26:21.205052+00:00",
+      "sha256": "b0d8f674cae11410a5c579400b847731c637944dee2eeaf9646870cb9e6f1056",
+      "bytes": 2788
+    },
+    {
+      "url": "https://help.gpmloginapp.com/huong-dan-s-dung-gpm-login-global/tinh-nang-nang-cao-private-server-luu-du-lieu-len-cloud.md",
+      "fetched_at": "2026-10-26T06:26:20.850608+00:00",
+      "sha256": "8269b9c6005588c396a708541048b929b2cdb336c607f38ad6394a20265a873a",
+      "bytes": 3267
+    },
+    {
+      "url": "https://help.gpmloginapp.com/cac-yeu-to-anh-huong-den-van-hanh-tai-khoan-gpm-login-global.md",
+      "fetched_at": "2026-10-26T06:26:21.340468+00:00",
+      "sha256": "64d93488ab830a1cd336af0e5f0d2536b0347bc965a5620be818d87967131dc4",
+      "bytes": 18681
+    },
+    {
+      "url": "https://help.gpmloginapp.com/llms.txt",
+      "fetched_at": "2026-10-26T06:32:15.629382+00:00",
+      "sha256": "71132c6e43e26277e289354ec6c68dfb14ebde905d348a85ea55c52d625f3441",
+      "bytes": 8815
+    },
+    {
+      "url": "https://help.gpmloginapp.com/",
+      "fetched_at": "2026-10-26T06:32:15.629459+00:00",
+      "sha256": "5c51e600a23b75d04061f65c6c77a153b91469b7aeefec8c827d1147305ec60e",
+      "bytes": 3962
+    },
+    {
+      "url": "https://api-docs.gpmloginapp.com/",
+      "fetched_at": "2026-10-26T06:32:15.629491+00:00",
+      "sha256": "2c1bc5e33fc6e9a9d2c9e52107fecbacee1ad9459467161394f39adea31c2b84",
+      "bytes": 57892
+    },
+    {
+      "url": "https://duys-organization-7.gitbook.io/gpm-login-document/llms.txt",
+      "fetched_at": "2026-10-26T06:32:15.629745+00:00",
+      "sha256": "dd39ba919e9568a327115ac0ada9fc138e9f3a737aac7f87c17cf64a1d7854ba",
+      "bytes": 5662
+    }
+  ]
+}
