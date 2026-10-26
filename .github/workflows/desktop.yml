@@ -1,6 +1,11 @@
 name: Desktop validation
 on:
   workflow_dispatch:
+    inputs:
+      upload_release:
+        description: Upload verified packages to the existing v0.1.0 draft release
+        type: boolean
+        default: false
   push:
     branches: [main]
   pull_request:
@@ -15,6 +20,9 @@ jobs:
           - os: macos-15-intel
             target: macos
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,3 +37,9 @@ jobs:
         with:
           name: Profile-Studio-${{ matrix.target }}-x64
           path: artifacts/*
+      - name: Upload release packages
+        if: github.event_name == 'workflow_dispatch' && inputs.upload_release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload v0.1.0 artifacts/* --repo "$GITHUB_REPOSITORY" --clobber
