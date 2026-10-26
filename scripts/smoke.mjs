@@ -32,7 +32,9 @@ const deadline = setTimeout(() => {
 deadline.unref();
 const checkpoint = name => { stage = name; console.log(`Smoke: ${name}`); };
 try {
-  electron = await _electron.launch({ cwd: root, args: ['.'], env: { ...process.env, PROFILE_STUDIO_DATA: data, PROFILE_STUDIO_DIAGNOSTICS: '1' }, timeout: 30000 });
+  const executablePath = process.env.PROFILE_STUDIO_EXECUTABLE;
+  console.log(executablePath ? 'Testing extracted release executable' : 'Testing application from source');
+  electron = await _electron.launch({ cwd: root, ...(executablePath ? { executablePath, args: [] } : { args: ['.'] }), env: { ...process.env, PROFILE_STUDIO_DATA: data, PROFILE_STUDIO_DIAGNOSTICS: '1' }, timeout: 30000 });
   electron.process().stdout?.on('data', chunk => process.stdout.write(chunk));
   electron.process().stderr?.on('data', chunk => process.stderr.write(chunk));
   checkpoint('manager window');
@@ -87,8 +89,26 @@ try {
   checkpoint('stop all');
   await call('profile.stopAll');
   state=await call('state'); assert.equal(state.running.length,0); assert.equal(state.profiles.length,2);
+  checkpoint('profile without startup URL');
+  const empty = await call('profile.save',{name:'No startup URL'});
+  const homePagePromise = electron.waitForEvent('window');
+  await call('profile.start',{id:empty.id});
+  const homePage = await homePagePromise;
+  await homePage.locator('#address').waitFor();
+  assert.equal(await homePage.locator('h1').innerText(),'Hồ sơ đã sẵn sàng');
+  await homePage.locator('#address').fill('javascript:alert(1)');
+  await homePage.locator('button[type="submit"]').click();
+  assert.match(await homePage.locator('#error').innerText(),/Địa chỉ không hợp lệ/);
+  await homePage.locator('#address').fill(url);
+  await homePage.locator('button[type="submit"]').click();
+  await homePage.waitForURL(url);
+  await homePage.locator('#name').waitFor();
+  await homePage.keyboard.press(process.platform === 'darwin' ? 'Meta+l' : 'Control+l');
+  await homePage.locator('#address').waitFor();
+  assert.equal(await homePage.locator('h1').innerText(),'Hồ sơ đã sẵn sàng');
+  await call('profile.stopAll');
   assert.equal(await page.locator('body').innerText().then(t=>t.includes('Profile Studio')),true);
-  console.log('PASS: Electron startup, IPC, separate cookies, reopen persistence, cache-only removal preserving cookie/localStorage and other profile cache, local workflow, screenshot, clean stop.');
+  console.log('PASS: Electron startup, IPC, separate cookies, reopen persistence, cache-only removal preserving cookie/localStorage and other profile cache, local workflow, screenshot, empty-URL start page, address navigation, Ctrl/Cmd+L, clean stop.');
 } finally {
   checkpoint('cleanup');
   if (electron) { await electron.evaluate(({app}) => app.exit(0)).catch(() => {}); await electron.close(); }

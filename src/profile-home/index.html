@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'">
+  <title>Trang đầu hồ sơ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="home.js" defer></script>
+</head>
+<body>
+  <main>
+    <p class="brand">PROFILE STUDIO</p>
+    <h1>Hồ sơ đã sẵn sàng</h1>
+    <p>Nhập địa chỉ trang web hoặc từ khóa để bắt đầu.</p>
+    <form id="navigate">
+      <label for="address">Địa chỉ hoặc tìm kiếm</label>
+      <div class="input-row"><input id="address" type="text" placeholder="https://example.com hoặc từ khóa tìm kiếm" autocomplete="off" autofocus required><button type="submit">Đi tới</button></div>
+      <p id="error" role="alert"></p>
+    </form>
+    <p class="hint">Mở lại ô địa chỉ: <kbd>Ctrl+L</kbd> trên Windows hoặc <kbd>⌘L</kbd> trên macOS.<br>Quay lại trang trước: dùng menu Điều hướng hoặc <kbd>Alt+←</kbd>.</p>
+  </main>
+</body>
+</html>

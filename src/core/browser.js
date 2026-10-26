@@ -1,9 +1,11 @@
-import { BrowserWindow, session, screen, app } from 'electron';
+import { BrowserWindow, session, screen, app, Menu } from 'electron';
+import { fileURLToPath } from 'node:url';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const trace = stage => { if (process.env.PROFILE_STUDIO_DIAGNOSTICS === '1') console.log(`Browser startup: ${stage}`); };
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const startPage = fileURLToPath(new URL('../profile-home/index.html', import.meta.url));
 export class Browsers {
   constructor(store, changed) { this.store = store; this.changed = changed; this.windows = new Map(); this.sync = null; this.starting = new Map(); this.maintenance = new Set(); }
   profile(id) {
@@ -13,6 +15,24 @@ export class Browsers {
   }
   getSession(id) { this.profile(id); return session.fromPartition(`persist:profile-${id}`); }
   running() { return [...this.windows.keys()]; }
+  setupNavigation(win) {
+    const home = () => { void win.loadFile(startPage).catch(() => {}); };
+    const menu = Menu.buildFromTemplate([
+      { label: 'Điều hướng', submenu: [
+        { label: 'Nhập địa chỉ / Tìm kiếm', accelerator: 'CmdOrCtrl+L', click: home },
+        { label: 'Trang đầu', accelerator: 'Alt+Home', click: home },
+        { label: 'Quay lại', accelerator: 'Alt+Left', click: () => { if (win.webContents.navigationHistory.canGoBack()) win.webContents.navigationHistory.goBack(); } },
+        { label: 'Tiến tới', accelerator: 'Alt+Right', click: () => { if (win.webContents.navigationHistory.canGoForward()) win.webContents.navigationHistory.goForward(); } },
+        { label: 'Tải lại', accelerator: 'CmdOrCtrl+R', click: () => win.webContents.reload() }
+      ] },
+      { label: 'Chỉnh sửa', submenu: [{ role: 'undo' }, { role: 'redo' }, { type: 'separator' }, { role: 'cut' }, { role: 'copy' }, { role: 'paste' }, { role: 'selectAll' }] }
+    ]);
+    if (process.platform === 'darwin') {
+      app.setApplicationMenu(menu);
+      win.on('focus', () => app.setApplicationMenu(menu));
+      win.on('closed', () => { if (Menu.getApplicationMenu() === menu) app.setApplicationMenu(null); });
+    } else win.setMenu(menu);
+  }
   async cdp(win, method, params = {}) {
     if (!win || win.isDestroyed()) throw new Error('Cửa sổ hồ sơ đã đóng.');
     if (!win.webContents.debugger.isAttached()) win.webContents.debugger.attach('1.3');
@@ -53,6 +73,7 @@ export class Browsers {
       webPreferences: { session: ses, nodeIntegration: false, contextIsolation: true, sandbox: true, webSecurity: true }
     });
     win.webContents.setWebRTCIPHandlingPolicy('disable_non_proxied_udp');
+    this.setupNavigation(win);
     this.windows.set(id, win);
     const auth = (event, _details, info, callback) => {
       if (info.isProxy && proxy) { event.preventDefault(); callback(proxy.username || '', proxy.password || ''); }
@@ -74,7 +95,7 @@ export class Browsers {
       await this.applyOverrides(win, p, ua);
       const urls = p.startUrls || [];
       trace('load startup URL');
-      await win.loadURL(urls[0] || 'about:blank');
+      if (urls[0]) await win.loadURL(urls[0]); else await win.loadFile(startPage);
       trace('startup URL loaded');
       // Each startup URL gets its own isolated window sharing this profile's session.
       // The primary window is the lifecycle owner; auxiliary windows close with it.
@@ -82,6 +103,7 @@ export class Browsers {
         const child = new BrowserWindow({ parent: win, width: p.width || 1280, height: p.height || 800,
           webPreferences: { session: ses, sandbox: true, contextIsolation: true, nodeIntegration: false } });
         child.webContents.setWebRTCIPHandlingPolicy('disable_non_proxied_udp');
+        this.setupNavigation(child);
         child.webContents.on('login', auth);
         child.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
         child.webContents.on('will-navigate', (e, u) => { if (!/^https?:\/\//i.test(u)) e.preventDefault(); });

@@ -1,6 +1,6 @@
 {
   "name": "profile-studio",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Independent local browser profile workspace for Windows and Intel macOS",
   "type": "module",
