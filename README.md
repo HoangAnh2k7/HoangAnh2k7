@@ -1,8 +1,12 @@
 # Profile Studio — Windows và macOS Intel
 
-**Tải bản thử nghiệm:** [GitHub Releases](https://github.com/HoangAnh2k7/HoangAnh2k7/releases/tag/v0.1.1). Các gói đã tạo trực tiếp trên Windows/macOS Intel; kiểm thử Electron từ mã nguồn trên hai runner đã đạt ([CI](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40319589492)). Chưa kiểm thử thủ công mọi chức năng của gói ZIP trên máy người dùng.
+**Tải bản thử nghiệm:** [GitHub Releases](https://github.com/HoangAnh2k7/HoangAnh2k7/releases/tag/v0.1.2). Các gói đã tạo trực tiếp trên Windows/macOS Intel; kiểm thử Electron từ mã nguồn và gói ZIP sau giải nén trên hai runner đã đạt ([CI](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40325989067)). Chưa kiểm thử thủ công mọi chức năng của gói ZIP trên máy người dùng.
 
-Bản thay thế độc lập được xây dựng từ danh mục chức năng quan sát trong bộ cài GPMLoginGlobal do người dùng cung cấp. **Đây là bản nền tảng 0.1.1, chưa tương đương toàn bộ GPMLogin.** Không dùng lại thương hiệu, tài khoản cloud hoặc browser engine đã chỉnh sửa của GPM.
+Bản thay thế độc lập được xây dựng từ danh mục chức năng quan sát trong bộ cài GPMLoginGlobal do người dùng cung cấp. **Đây là bản nền tảng 0.1.2, chưa tương đương toàn bộ GPMLogin.** Không dùng lại thương hiệu, tài khoản cloud hoặc browser engine đã chỉnh sửa của GPM.
+
+## Sửa hồ sơ mở ra trang trắng — 0.1.2
+
+Hồ sơ để trống **Trang mở khi khởi động** nay hiện trang đầu có ô địa chỉ/tìm kiếm. Nhấn **Ctrl+L** (Windows) / **Cmd+L** (macOS) hoặc dùng menu **Điều hướng** để nhập địa chỉ mới. Chromium đi kèm Electron đã được đóng gói sẵn; không cần tải mã nguồn Chromium. [Chi tiết bản sửa và kiểm chứng ZIP thực tế](docs/CHANGES_0.1.2.md).
 
 ## Thay đổi trong mã nguồn 0.1.1
 

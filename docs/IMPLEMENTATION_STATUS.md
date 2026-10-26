@@ -44,3 +44,7 @@ Bổ sung dọn HTTP cache riêng, bảo toàn cookie/storage; chặn xóa nhóm
 ## Nghiệm thu native 0.1.1
 
 Commit `f74e80121ef383a96d4f46cf2551485f13efcf25`, [CI 40319589492](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40319589492): Windows x64 và macOS Intel đều đạt 21/21 test cùng smoke Electron. Smoke mới xác nhận HTTP cache có dữ liệu trước khi dọn, về 0 sau dọn, cookie/local storage còn sau mở lại, cache hồ sơ thứ hai giữ nguyên và chặn dọn hồ sơ đang mở. Gói ZIP được build native và có SHA-256; smoke chạy từ mã nguồn, chưa kiểm tra riêng bản ZIP sau giải nén.
+
+## Sửa trang trắng và nghiệm thu gói 0.1.2
+
+Thêm trang đầu khi không có URL khởi động; nhập địa chỉ/tìm kiếm và menu điều hướng, Ctrl/Cmd+L. [CI 40325989067](https://github.com/HoangAnh2k7/HoangAnh2k7/actions/runs/40325989067) đạt trên Windows x64/macOS Intel, gồm 21 test, smoke mã nguồn và smoke executable lấy từ ZIP sau kiểm checksum/giải nén. Đây là kiểm tra gói tự động trên runner, chưa tương đương nghiệm thu thủ công mọi máy người dùng. [Chi tiết](CHANGES_0.1.2.md).
