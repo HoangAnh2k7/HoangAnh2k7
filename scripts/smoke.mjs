@@ -104,7 +104,15 @@ try {
   await homePage.waitForURL(url);
   await homePage.locator('#name').waitFor();
   checkpoint('location shortcut');
-  await homePage.keyboard.press(process.platform === 'darwin' ? 'Meta+l' : 'Control+l');
+  // Exercise Electron's native input/menu path; CDP keyboard events bypass it.
+  await electron.evaluate(({BrowserWindow,session},id) => {
+    const ses = session.fromPartition(`persist:profile-${id}`);
+    const win = BrowserWindow.getAllWindows().find(w => w.webContents.session === ses);
+    win.focus(); win.webContents.focus();
+    const modifiers = [process.platform === 'darwin' ? 'meta' : 'control'];
+    win.webContents.sendInputEvent({type:'keyDown',keyCode:'L',modifiers});
+    win.webContents.sendInputEvent({type:'keyUp',keyCode:'L',modifiers});
+  },empty.id);
   await homePage.locator('#address').waitFor();
   assert.equal(await homePage.locator('h1').innerText(),'Hồ sơ đã sẵn sàng');
   await call('profile.stopAll');
