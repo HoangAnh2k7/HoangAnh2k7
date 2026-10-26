@@ -2,6 +2,7 @@ import { BrowserWindow, session, screen, app } from 'electron';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
+const trace = stage => { if (process.env.PROFILE_STUDIO_DIAGNOSTICS === '1') console.log(`Browser startup: ${stage}`); };
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 export class Browsers {
   constructor(store, changed) { this.store = store; this.changed = changed; this.windows = new Map(); this.sync = null; this.starting = new Map(); }
@@ -15,7 +16,10 @@ export class Browsers {
   async cdp(win, method, params = {}) {
     if (!win || win.isDestroyed()) throw new Error('Cửa sổ hồ sơ đã đóng.');
     if (!win.webContents.debugger.isAttached()) win.webContents.debugger.attach('1.3');
-    return win.webContents.debugger.sendCommand(method, params);
+    trace(`CDP ${method}`);
+    let timer;
+    try { return await Promise.race([win.webContents.debugger.sendCommand(method, params), new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`Browser command timed out: ${method}`)), 10000); })]); }
+    finally { clearTimeout(timer); }
   }
   async start(id) {
     if (this.windows.has(id)) { this.windows.get(id).focus(); return { id }; }
@@ -28,8 +32,11 @@ export class Browsers {
     const state = this.store.snapshot(); const ses = this.getSession(id);
     const proxy = state.proxies.find(x => x.id === p.proxyId);
     if (proxy?.server.startsWith('socks5:') && (proxy.username || proxy.password)) throw new Error('Engine Chromium chưa hỗ trợ xác thực SOCKS5. Dùng HTTP proxy có xác thực hoặc SOCKS5 không xác thực.');
+    trace('configure proxy');
     await ses.setProxy(proxy ? { proxyRules: proxy.server, proxyBypassRules: '<-loopback>' } : { mode: 'direct' });
+    trace('close previous connections');
     await ses.closeAllConnections();
+    trace('configure session');
     ses.setPermissionRequestHandler((_webContents, _permission, callback) => callback(false));
     ses.setPermissionCheckHandler(() => false);
     const ua = p.userAgent || ses.getUserAgent();
@@ -39,6 +46,7 @@ export class Browsers {
     for (const ext of extensions) {
       if (!ses.extensions.getAllExtensions().some(e => e.path === ext.path)) await ses.extensions.loadExtension(ext.path);
     }
+    trace('create window');
     const win = new BrowserWindow({ width: p.width || 1280, height: p.height || 800, title: p.name,
       backgroundColor: '#ffffff', autoHideMenuBar: false,
       webPreferences: { session: ses, nodeIntegration: false, contextIsolation: true, sandbox: true, webSecurity: true }
@@ -57,9 +65,12 @@ export class Browsers {
     win.webContents.on('will-navigate', (event, url) => { if (!/^https?:\/\//i.test(url) && url !== 'about:blank') event.preventDefault(); });
     win.on('closed', () => { this.windows.delete(id); if (this.sync?.leaderId === id || this.sync?.followerIds.includes(id)) void this.stopSync(); this.changed(); });
     try {
+      trace('apply overrides');
       await this.applyOverrides(win, p, ua);
       const urls = p.startUrls || [];
+      trace('load startup URL');
       await win.loadURL(urls[0] || 'about:blank');
+      trace('startup URL loaded');
       // Each startup URL gets its own isolated window sharing this profile's session.
       // The primary window is the lifecycle owner; auxiliary windows close with it.
       for (const url of urls.slice(1)) {

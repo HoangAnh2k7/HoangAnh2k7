@@ -22,7 +22,9 @@ const deadline = setTimeout(() => {
 deadline.unref();
 const checkpoint = name => { stage = name; console.log(`Smoke: ${name}`); };
 try {
-  electron = await _electron.launch({ cwd: root, args: ['.'], env: { ...process.env, PROFILE_STUDIO_DATA: data }, timeout: 30000 });
+  electron = await _electron.launch({ cwd: root, args: ['.'], env: { ...process.env, PROFILE_STUDIO_DATA: data, PROFILE_STUDIO_DIAGNOSTICS: '1' }, timeout: 30000 });
+  electron.process().stdout?.on('data', chunk => process.stdout.write(chunk));
+  electron.process().stderr?.on('data', chunk => process.stderr.write(chunk));
   checkpoint('manager window');
   const page = await electron.firstWindow(); await page.waitForFunction(() => Boolean(window.desktop));
   const call = (method,args={}) => page.evaluate(({method,args}) => window.desktop.call(method,args), {method,args});
